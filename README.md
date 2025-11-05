@@ -37,8 +37,9 @@ An integrated ROS2 package that combines motor control, camera streaming, and SL
 
 This package depends on the following packages:
 - [`robot_base`](https://github.com/GarryLeo0911/robot_base.git) - Motor control and teleop functionality
-- [`oakd_driver`](https://github.com/GarryLeo0911/oakd_driver.git) - OAK-D camera driver
+- [`oakd_driver`](https://github.com/GarryLeo0911/oakd_driver.git) - OAK-D camera driver (for distributed processing)
 - [`map_builder`](https://github.com/GarryLeo0911/map_builder.git) - RTAB-Map integration
+- `depthai_ros_driver` - Official DepthAI ROS2 driver (for edge computing with RTAB-Map)
 - `rtabmap_ros` - RTAB-Map ROS2 bindings
 
 ### Build Instructions
@@ -53,6 +54,10 @@ git clone https://github.com/GarryLeo0911/robot_base.git
 git clone https://github.com/GarryLeo0911/oakd_driver.git
 git clone https://github.com/GarryLeo0911/map_builder.git
 # Note: autoslam package should be included in one of the above repositories
+
+# Install system dependencies (for edge computing mode)
+sudo apt update
+sudo apt install ros-jazzy-depthai-ros-driver ros-jazzy-rtabmap-ros
 
 # Build the workspace
 cd ~/ros2_ws
@@ -75,6 +80,9 @@ Robot Side:          Laptop Side:
 
 ### 2. Edge Computing Architecture
 **Best for**: Powerful onboard computing, low-bandwidth or intermittent connectivity
+
+**Note**: Uses the official `depthai_ros_driver` system package for RTAB-Map integration.
+
 ```
 Robot Side:              Laptop Side:
 ├── Motor Control        ├── Teleop Control
@@ -165,9 +173,11 @@ export RMW_IMPLEMENTATION=rmw_cyclonedx_cpp
 
 ### Camera Configuration
 
-Camera parameters can be customized by modifying the configuration files in the `oakd_driver` package:
+**For Distributed Processing**: Camera parameters can be customized by modifying the configuration files in the `oakd_driver` package:
 - `camera.yaml` - General camera configuration
 - `rgbd.yaml` - RGBD-optimized for SLAM
+
+**For Edge Computing**: Camera parameters are configured through the system `depthai_ros_driver` package. The default configuration files are used from the system installation.
 
 ### Motor Control
 
@@ -210,7 +220,8 @@ autoslam/
 
 ### Hardware Dependencies
 - `robot_base` - Motor control interface
-- `oakd_driver` - OAK-D camera driver
+- `oakd_driver` - Custom OAK-D camera driver (distributed processing)
+- `depthai_ros_driver` - Official DepthAI ROS2 driver (edge computing)
 - `map_builder` - RTAB-Map integration
 
 ### Visualization
@@ -224,7 +235,8 @@ autoslam/
 1. **Camera not detected**
    - Ensure OAK-D camera is properly connected
    - Check USB permissions: `sudo usermod -a -G plugdev $USER`
-   - Verify camera configuration in `oakd_driver/config/`
+   - **Distributed mode**: Verify camera configuration in `oakd_driver/config/`
+   - **Edge computing mode**: Check system `depthai_ros_driver` configuration
 
 2. **Motor control not responding**
    - Check motor driver connections

@@ -17,7 +17,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     # Get package directories
     robot_base_dir = get_package_share_directory('robot_base')
-    oakd_driver_dir = get_package_share_directory('oakd_driver')
+    depthai_ros_driver_dir = get_package_share_directory('depthai_ros_driver')
     
     # Declare launch arguments
     declared_arguments = [
@@ -33,7 +33,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'camera_params_file',
-            default_value=os.path.join(oakd_driver_dir, 'config', 'rgbd.yaml'),
+            default_value=os.path.join(depthai_ros_driver_dir, 'config', 'rgbd.yaml'),
             description='Camera configuration file path optimized for RTAB-Map'
         ),
         DeclareLaunchArgument(
@@ -68,7 +68,7 @@ def generate_launch_description():
         # This includes camera driver + RTAB-Map odometry + RTAB-Map SLAM
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(oakd_driver_dir, 'launch', 'rtabmap.launch.py')
+                os.path.join(depthai_ros_driver_dir, 'launch', 'rtabmap.launch.py')
             ),
             launch_arguments={
                 'name': LaunchConfiguration('camera_name'),

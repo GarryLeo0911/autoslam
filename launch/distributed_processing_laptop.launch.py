@@ -65,20 +65,5 @@ def generate_launch_description():
             launch_arguments={
                 'name': LaunchConfiguration('camera_name')
             }.items()
-        ),
-        
-        # Optional: Additional visualization nodes
-        Node(
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            namespace=LaunchConfiguration('laptop_namespace'),
-            output='screen',
-            arguments=['-d', os.path.join(
-                get_package_share_directory('autoslam'), 
-                'config', 
-                'distributed_processing_laptop.rviz'
-            )],
-            condition=lambda context: LaunchConfiguration('use_rtabmap_viz').perform(context) == 'true'
         )
     ])
