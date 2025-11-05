@@ -36,9 +36,9 @@ An integrated ROS2 package that combines motor control, camera streaming, and SL
 ### Dependencies
 
 This package depends on the following packages:
-- `robot_base` - Motor control and teleop functionality
-- `oakd_driver` - OAK-D camera driver
-- `map_builder` - RTAB-Map integration
+- [`robot_base`](https://github.com/GarryLeo0911/robot_base.git) - Motor control and teleop functionality
+- [`oakd_driver`](https://github.com/GarryLeo0911/oakd_driver.git) - OAK-D camera driver
+- [`map_builder`](https://github.com/GarryLeo0911/map_builder.git) - RTAB-Map integration
 - `rtabmap_ros` - RTAB-Map ROS2 bindings
 
 ### Build Instructions
@@ -48,8 +48,11 @@ This package depends on the following packages:
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
 
-# Clone the repository (or copy the packages)
-# Ensure you have all required packages: autoslam, robot_base, oakd_driver, map_builder
+# Clone the required repositories
+git clone https://github.com/GarryLeo0911/robot_base.git
+git clone https://github.com/GarryLeo0911/oakd_driver.git
+git clone https://github.com/GarryLeo0911/map_builder.git
+# Note: autoslam package should be included in one of the above repositories
 
 # Build the workspace
 cd ~/ros2_ws
@@ -283,7 +286,9 @@ Contributions are welcome! Please follow these guidelines:
 
 ```bash
 # Clone development version
-git clone <repository-url>
+git clone https://github.com/GarryLeo0911/robot_base.git
+git clone https://github.com/GarryLeo0911/oakd_driver.git
+git clone https://github.com/GarryLeo0911/map_builder.git
 cd autoslam
 
 # Install development dependencies
