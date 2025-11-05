@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>autoslam</name>
+  <version>1.0.0</version>
+  <description>AutoSLAM - Integrated SLAM package combining motor control, camera streaming, and SLAM capabilities for both robot-side and laptop-side configurations</description>
+  <maintainer email="user@example.com">AutoSLAM Team</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <!-- Dependencies from robot_base package -->
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>robot_base</exec_depend>
+  
+  <!-- Dependencies from oakd_driver package -->
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>sensor_msgs</depend>
+  <depend>vision_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>image_transport_plugins</depend>
+  <depend>image_pipeline</depend>
+  <depend>oakd_driver</depend>
+  <depend>depthai_descriptions</depend>
+  
+  <!-- Dependencies from map_builder package -->
+  <depend>nav_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>rtabmap_slam</depend>
+  <depend>rtabmap_viz</depend>
+  <depend>rtabmap_conversions</depend>
+  <depend>rtabmap_util</depend>
+  <depend>rtabmap_msgs</depend>
+  <depend>map_builder</depend>
+  
+  <!-- Additional dependencies for integration -->
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>rviz2</depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
