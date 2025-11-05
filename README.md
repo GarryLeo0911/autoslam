@@ -1,7 +1,7 @@
 # AutoSLAM - Integrated SLAM System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![ROS2](https://img.shields.io/badge/ROS2-Humble-blue.svg)](https://docs.ros.org/en/humble/)
+[![ROS2](https://img.shields.io/badge/ROS2-Jazzy-blue.svg)](https://docs.ros.org/en/jazzy/)
 
 An integrated ROS2 package that combines motor control, camera streaming, and SLAM capabilities for autonomous robotics applications. AutoSLAM provides flexible deployment architectures to optimize performance between robot-side and laptop-side processing.
 
@@ -28,8 +28,8 @@ An integrated ROS2 package that combines motor control, camera streaming, and SL
 
 ### Prerequisites
 
-- ROS2 Humble or later
-- Ubuntu 22.04 or compatible
+- ROS2 Jazzy or later
+- Ubuntu 24.04 or compatible
 - OAK-D camera
 - Robot with motor control hardware
 
@@ -301,7 +301,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [RTAB-Map](http://introlab.github.io/rtabmap/) for the SLAM algorithm
 - [DepthAI](https://docs.luxonis.com/) for OAK-D camera support
-- [ROS2](https://docs.ros.org/en/humble/) community for the robotics framework
+- [ROS2](https://docs.ros.org/en/jazzy/) community for the robotics framework
 
 ## 📞 Support
 
