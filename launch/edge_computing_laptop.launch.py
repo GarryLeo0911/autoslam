@@ -1,8 +1,8 @@
 """
 Edge Computing - Laptop Side Launch File
-Minimal laptop role - only teleop control and optional monitoring
+Minimal laptop role - only optional monitoring
 Robot side: Motor control + Camera + Complete RTAB-Map processing
-Laptop side: Teleop control only (+ optional map viewing)
+Laptop side: Optional map viewing (run teleop separately)
 """
 
 import os
@@ -33,22 +33,11 @@ def generate_launch_description():
         )
     ]
 
-    nodes = [
-        # Keyboard teleop (publishes cmd_vel)
-        Node(
-            package='robot_base',
-            executable='teleop_wasd',
-            name='teleop_wasd',
-            namespace=LaunchConfiguration('laptop_namespace'),
-            output='screen',
-            remappings=[
-                ('cmd_vel', '/cmd_vel')  # Publish to global cmd_vel topic
-            ]
-        )
-    ]
+    nodes = []
     
     # Optional: Simple RViz configuration to view the map and robot status
     # This is much lighter than full RTAB-Map visualization
+    # Run teleop separately: ros2 run robot_base teleop_wasd --ros-args -r cmd_vel:=/cmd_vel
     nodes.append(
         Node(
             package='rviz2',

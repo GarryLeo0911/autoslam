@@ -72,10 +72,10 @@ AutoSLAM supports two main deployment architectures:
 ### 1. Distributed Processing Architecture
 **Best for**: Limited onboard computing, high-bandwidth network connection
 ```
-Robot Side:          Laptop Side:
-├── Motor Control    ├── Teleop Control
-├── Camera Stream    ├── RTAB-Map Processing
-└── Data Streaming   └── Visualization
+Robot Side:              Laptop Side:
+├── Motor Control        ├── RTAB-Map Processing (Terminal 1)
+├── Camera Stream        ├── Visualization
+└── Data Streaming       └── Teleop Control (Terminal 2)
 ```
 
 ### 2. Edge Computing Architecture
@@ -85,8 +85,8 @@ Robot Side:          Laptop Side:
 
 ```
 Robot Side:              Laptop Side:
-├── Motor Control        ├── Teleop Control
-├── Camera Processing    └── Map Viewing (optional)
+├── Motor Control        ├── Map Viewing (optional, Terminal 1)
+├── Camera Processing    └── Teleop Control (Terminal 2)
 ├── RTAB-Map SLAM        
 └── Autonomous Operation 
 ```
@@ -102,9 +102,14 @@ Perfect when you have a powerful laptop and want to offload processing from the 
 ros2 launch autoslam distributed_processing_robot.launch.py
 ```
 
-**Laptop Side:**
+**Laptop Side (Terminal 1 - SLAM Processing):**
 ```bash
 ros2 launch autoslam distributed_processing_laptop.launch.py
+```
+
+**Laptop Side (Terminal 2 - Robot Control):**
+```bash
+ros2 run robot_base teleop_wasd --ros-args -r cmd_vel:=/cmd_vel
 ```
 
 ### Edge Computing Mode
@@ -116,10 +121,27 @@ Ideal for autonomous operation with minimal dependency on external processing.
 ros2 launch autoslam edge_computing_robot.launch.py
 ```
 
-**Laptop Side (optional):**
+**Laptop Side (Terminal 1 - Optional Map Viewer):**
 ```bash
 ros2 launch autoslam edge_computing_laptop.launch.py
 ```
+
+**Laptop Side (Terminal 2 - Robot Control):**
+```bash
+ros2 run robot_base teleop_wasd --ros-args -r cmd_vel:=/cmd_vel
+```
+
+### Teleop Controls
+
+When running the teleop node, you can control the robot using:
+- **W**: Move Forward
+- **S**: Move Backward  
+- **A**: Turn Left
+- **D**: Turn Right
+- **Q** or **Space**: Stop
+- **R/F**: Increase/Decrease linear speed
+- **T/G**: Increase/Decrease angular speed
+- **ESC**: Quit teleop
 
 ### Launch Arguments
 
@@ -238,17 +260,24 @@ autoslam/
    - **Distributed mode**: Verify camera configuration in `oakd_driver/config/`
    - **Edge computing mode**: Check system `depthai_ros_driver` configuration
 
-2. **Motor control not responding**
+3. **Motor control not responding**
    - Check motor driver connections
    - Verify motor controller parameters in `robot_base`
    - Ensure proper permissions for hardware access
+   - **If using separate teleop terminal**: Verify teleop is running and publishing to `/cmd_vel`
 
-3. **Network connectivity issues (Distributed mode)**
+4. **Teleop control issues**
+   - Ensure teleop terminal has focus for keyboard input
+   - Check that teleop is publishing: `ros2 topic echo /cmd_vel`
+   - Verify teleop node is running: `ros2 node list | grep teleop`
+   - Make sure only one teleop instance is running
+
+4. **Network connectivity issues (Distributed mode)**
    - Verify robot and laptop are on the same network
    - Check firewall settings
    - Ensure ROS_DOMAIN_ID matches on both devices
 
-4. **RTAB-Map performance issues**
+5. **RTAB-Map performance issues**
    - Reduce camera resolution in configuration
    - Adjust RTAB-Map parameters in `map_builder/config/`
    - Consider switching to edge computing mode
@@ -268,9 +297,19 @@ ros2 topic echo /oak/rgb/image_raw
 ros2 node list
 ros2 node info /motor_node
 
+# Test teleop separately
+ros2 run robot_base teleop_wasd --ros-args -r cmd_vel:=/cmd_vel
+
 # Test launch files
 ros2 launch autoslam distributed_processing_robot.launch.py --help
 ```
+
+### Important Notes
+
+- **Teleop Control**: The teleop (keyboard control) is now run separately from the main launch files. This provides better control isolation and prevents shutdown conflicts.
+- **Multiple Terminals**: You'll need two terminals on the laptop side - one for SLAM processing/visualization and one for robot control.
+- **Keyboard Focus**: Make sure the teleop terminal has keyboard focus when controlling the robot.
+- **Clean Shutdown**: You can stop teleop independently without affecting the SLAM processing, and vice versa.
 
 ## 🎯 Performance Optimization
 

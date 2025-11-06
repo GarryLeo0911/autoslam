@@ -2,7 +2,7 @@
 Distributed Processing - Laptop Side Launch File
 Laptop handles processing and visualization of data from robot
 Robot side: Motor control + Camera data streaming to laptop
-Laptop side: Teleop control + RTAB-Map processing & visualization
+Laptop side: RTAB-Map processing & visualization (run teleop separately)
 """
 
 import os
@@ -11,7 +11,6 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -44,20 +43,9 @@ def generate_launch_description():
     ]
 
     return LaunchDescription(declared_arguments + [
-        # Keyboard teleop (publishes cmd_vel)
-        Node(
-            package='robot_base',
-            executable='teleop_wasd',
-            name='teleop_wasd',
-            namespace=LaunchConfiguration('laptop_namespace'),
-            output='screen',
-            remappings=[
-                ('cmd_vel', '/cmd_vel')  # Publish to global cmd_vel topic
-            ]
-        ),
-        
         # RTAB-Map SLAM processing and visualization
         # This will process the camera data received from the robot
+        # Run teleop separately: ros2 run robot_base teleop_wasd --ros-args -r cmd_vel:=/cmd_vel
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(map_builder_dir, 'launch', 'rtabmap.launch.py')
